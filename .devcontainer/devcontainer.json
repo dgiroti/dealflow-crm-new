@@ -1,0 +1,25 @@
+{
+  "name": "DealFlow CRM",
+  "image": "mcr.microsoft.com/devcontainers/universal:2",
+  "postStartCommand": "sudo iptables-legacy -P FORWARD ACCEPT || true",
+  "forwardPorts": [3000, 5173],
+  "portsAttributes": {
+    "3000": {
+      "label": "API"
+    },
+    "5173": {
+      "label": "Web app"
+    }
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": ["dbaeumer.vscode-eslint", "esbenp.prettier-vscode"],
+      "settings": {
+        "editor.formatOnSave": true,
+        "[javascript][typescript][javascriptreact][typescriptreact][json][jsonc][css][scss][html][markdown][yaml]": {
+          "editor.defaultFormatter": "esbenp.prettier-vscode"
+        }
+      }
+    }
+  }
+}
