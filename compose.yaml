@@ -1,0 +1,21 @@
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      # Local development only. These are NOT real secrets; never reuse them anywhere else.
+      POSTGRES_USER: dealflow
+      POSTGRES_PASSWORD: dealflow
+      POSTGRES_DB: dealflow
+    ports:
+      - '5432:5432'
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    # "pg_isready" is PostgreSQL's own "are you ready for connections?" check
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U dealflow -d dealflow']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  postgres-data:
