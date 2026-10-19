@@ -28,3 +28,6 @@ Open the repository in GitHub Codespaces, then:
 
     npm install
     npm test
+
+    npm run dev:api      # start the API on http://localhost:3000
+    npm run dev:web      # start the web app on http://localhost:5173
