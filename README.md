@@ -1,4 +1,5 @@
 # dealflow-crm-new
+
 # DealFlow CRM
 
 A multi-tenant CRM for small sales teams: manage companies and contacts, move deals
@@ -15,10 +16,10 @@ through a drag-and-drop pipeline, track tasks, and see team performance on a das
 
 ## Project structure
 
-| Folder            | What it contains                     |
-| ----------------- | ------------------------------------ |
-| `apps/api`        | Express REST API                     |
-| `apps/web`        | React web app                        |
+| Folder            | What it contains                      |
+| ----------------- | ------------------------------------- |
+| `apps/api`        | Express REST API                      |
+| `apps/web`        | React web app                         |
 | `packages/shared` | Validation schemas and types for both |
 
 ## Getting started
