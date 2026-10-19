@@ -1,0 +1,75 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+# If you push again while a check is still running on the same branch,
+# cancel the old run instead of wasting time on outdated code
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  check:
+    name: Check
+    runs-on: ubuntu-latest
+
+    # A real PostgreSQL, started by GitHub just for this run
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_USER: dealflow
+          POSTGRES_PASSWORD: dealflow
+          POSTGRES_DB: dealflow
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U dealflow -d dealflow"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    # Settings for the API during this run (there's no .env file in CI)
+    env:
+      DATABASE_URL: postgres://dealflow:dealflow@localhost:5432/dealflow
+
+    steps:
+      - name: Get the code
+        uses: actions/checkout@v6
+
+      - name: Install Node.js 22
+        uses: actions/setup-node@v6
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install packages exactly as in package-lock.json
+        run: npm ci
+
+      - name: Check formatting
+        run: npm run format:check
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type-check
+        run: npm run typecheck
+
+      - name: Check production packages for known security problems
+        run: npm audit --omit=dev --audit-level=high
+
+      - name: Apply database migrations
+        run: npm run db:migrate
+
+      - name: Test
+        run: npm test
+
+      - name: Build
+        run: npm run build
