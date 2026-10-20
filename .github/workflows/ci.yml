@@ -39,6 +39,8 @@ jobs:
     # Settings for the API during this run (there's no .env file in CI)
     env:
       DATABASE_URL: postgres://dealflow:dealflow@localhost:5432/dealflow
+      # A throwaway secret used only inside CI; never used anywhere real
+      JWT_SECRET: ci-only-secret-not-used-anywhere-else-0123456789
 
     steps:
       - name: Get the code

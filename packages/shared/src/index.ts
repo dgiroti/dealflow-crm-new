@@ -2,3 +2,6 @@
 export * from './deals';
 export * from './roles';
 export * from './health';
+export * from './auth';
+export * from './workspace';
+export * from './status';
