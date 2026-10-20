@@ -1,4 +1,7 @@
-import { pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { index, pgEnum, pgTable, text, timestamp, uuid } from 'drizzle-orm/pg-core';
+import { ROLES, STATUS } from '@dealflow/shared';
+
+const timestamptz = (name: string) => timestamp(name, { withTimezone: true });
 
 // Every workspace (company using DealFlow) is one row in this table
 export const organizations = pgTable('organizations', {
@@ -13,3 +16,48 @@ export const organizations = pgTable('organizations', {
   // When the row was created, filled in automatically by the database
   createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
 });
+
+export const userRoleEnum = pgEnum('user_role', ROLES);
+export const userStatusEnum = pgEnum('user_status', STATUS);
+
+export const users = pgTable(
+  'users',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    // Which workspace this user belongs to. If the workspace is deleted, its users go too.
+    orgId: uuid('org_id')
+      .notNull()
+      .references(() => organizations.id, { onDelete: 'cascade' }),
+    name: text('name').notNull(),
+    // For now, one email = one account (a person belongs to one workspace)
+    email: text('email').notNull().unique(),
+    passwordHash: text('password_hash').notNull(),
+    role: userRoleEnum('role').notNull().default('rep'),
+    status: userStatusEnum('status').notNull().default('active'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true })
+      .notNull()
+      .defaultNow()
+      .$onUpdate(() => new Date()),
+  },
+  // An index makes "find all users in this workspace" fast
+  (table) => [index('users_org_id_idx').on(table.orgId)],
+);
+
+export const sessions = pgTable(
+  'sessions',
+  {
+    id: uuid('id').primaryKey().defaultRandom(),
+    userId: uuid('user_id')
+      .notNull()
+      .references(() => users.id, { onDelete: 'cascade' }),
+    // We store a HASH of the refresh token, never the token itself
+    tokenHash: text('token_hash').notNull().unique(),
+    userAgent: text('user_agent'),
+    expiresAt: timestamp('expires_at', { withTimezone: true }).notNull(),
+    // Set when the session ends (logout, rotation, or suspected theft)
+    revokedAt: timestamptz('revoked_at'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (table) => [index('sessions_user_id_idx').on(table.userId)],
+);

@@ -11,6 +11,7 @@
     "db:migrate": "drizzle-kit migrate"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.10",
     "@types/express": "^5.0.6",
     "@types/node": "^26.6.5",
     "@types/pg": "^8.23.1",
@@ -21,7 +22,10 @@
   },
   "dependencies": {
     "@dealflow/shared": "^0.0.0",
+    "cookie-parser": "^1.4.7",
     "express": "^5.3.0",
-    "helmet": "^8.3.0"
+    "express-rate-limit": "^8.7.1",
+    "helmet": "^8.3.0",
+    "jose": "^6.2.12"
   }
 }
