@@ -1,4 +1,4 @@
-import { Link, Route, Routes } from 'react-router';
+import { Link, Route, Navigate, Routes } from 'react-router';
 import DashboardPage from './features/dashboard/DashboardPage';
 import LoginPage from './features/auth/LoginPage';
 import SignupPage from './features/auth/SignupPage';
@@ -18,9 +18,11 @@ function NotFoundPage() {
 export default function App() {
   return (
     <Routes>
-      <Route path="/" element={<DashboardPage />} />
+      {/* NEW: visiting "/" sends you straight to the login page */}
+      <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
+      <Route path="/dashboard" element={<DashboardPage />} />
       {/* "*" matches everything, so it must come last */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

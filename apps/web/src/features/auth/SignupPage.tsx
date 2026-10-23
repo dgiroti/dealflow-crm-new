@@ -1,15 +1,19 @@
-import { Link } from 'react-router';
+import { Link , useNavigate} from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { registerSchema, type AuthUser } from '@dealflow/shared';
+// import { registerSchema, type AuthUser } from '@dealflow/shared';
+import { registerSchema } from '@dealflow/shared';
 import { Alert, Button, TextField } from '../../components/ui';
 import { applyServerErrors } from '../../lib/forms';
-import * as api from '../../lib/api';
-import { useState } from 'react';
-
+// import * as api from '../../lib/api';
+// import { useState } from 'react';
+import { useAuth } from './auth-context';
 
 export default function SignupPage() {
-  const [createdUser, setCreatedUser] = useState<AuthUser | null>(null);
+  // const [createdUser, setCreatedUser] = useState<AuthUser | null>(null);
+  const {signUp} = useAuth()
+  const navigate = useNavigate();
+
   const {
     register, // connects an input to the form
     setError,
@@ -27,29 +31,31 @@ export default function SignupPage() {
 
   // });
 
-   const onSubmit = handleSubmit(async (values) => {
+  const onSubmit = handleSubmit(async (values) => {
     try {
-      const { user } = await api.register(values); // the function from Step 1
-      setCreatedUser(user);
+      await signUp(values);
+      navigate('/dashboard')
+      // const { user } = await api.register(values); // the function from Step 1
+      // setCreatedUser(user);
     } catch (error) {
       applyServerErrors(error, setError);
     }
   });
 
-    // NEW: after a successful sign-up, show a confirmation instead of the form
-  if (createdUser) {
-    return (
-      <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
-        <div className="w-full max-w-md rounded-xl bg-white p-8 text-center shadow-sm ring-1 ring-gray-200">
-          <h1 className="text-2xl font-bold text-gray-900">Workspace created</h1>
-          <p className="mt-2 text-gray-600">
-            “{createdUser.organization.name}” is ready. You're signed in as {createdUser.name} (
-            {createdUser.role}).
-          </p>
-        </div>
-      </main>
-    );
-  }
+  // // NEW: after a successful sign-up, show a confirmation instead of the form
+  // if (createdUser) {
+  //   return (
+  //     <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4">
+  //       <div className="w-full max-w-md rounded-xl bg-white p-8 text-center shadow-sm ring-1 ring-gray-200">
+  //         <h1 className="text-2xl font-bold text-gray-900">Workspace created</h1>
+  //         <p className="mt-2 text-gray-600">
+  //           “{createdUser.organization.name}” is ready. You're signed in as {createdUser.name} (
+  //           {createdUser.role}).
+  //         </p>
+  //       </div>
+  //     </main>
+  //   );
+  // }
 
   return (
     <main className="flex min-h-screen items-center justify-center bg-gray-50 px-4 py-12">
@@ -61,7 +67,7 @@ export default function SignupPage() {
 
         {/* Lowercase <form>: the normal HTML form element */}
         <form onSubmit={onSubmit} noValidate className="mt-6 space-y-4">
-        {errors.root && <Alert>{errors.root.message}</Alert>}
+          {errors.root && <Alert>{errors.root.message}</Alert>}
           <TextField
             label="Workspace name"
             placeholder="Acme Sales"
@@ -101,13 +107,7 @@ export default function SignupPage() {
             Log in
           </Link>
         </p>
-
-        
       </div>
-
-      
     </main>
   );
-
-  
 }
