@@ -1,75 +1,28 @@
-import { useQuery } from '@tanstack/react-query';
-import { DEAL_STAGES } from '@dealflow/shared';
-import { fetchHealth } from './lib/api';
+import { Link, Route, Routes } from 'react-router';
+import DashboardPage from './features/dashboard/DashboardPage';
+import LoginPage from './features/auth/LoginPage';
+import SignupPage from './features/auth/SignupPage';
 
-type Tone = 'green' | 'amber' | 'red' | 'gray';
-
-// A small colored label, reused for every status
-function StatusBadge({ label, tone }: { label: string; tone: Tone }) {
-  const tones: Record<Tone, string> = {
-    green: 'bg-green-100 text-green-800',
-    amber: 'bg-amber-100 text-amber-800',
-    red: 'bg-red-100 text-red-800',
-    gray: 'bg-gray-100 text-gray-700',
-  };
-
+function NotFoundPage() {
   return (
-    <span className={`rounded-full px-3 py-1 text-sm font-medium ${tones[tone]}`}>{label}</span>
+    <main className="flex min-h-screen flex-col items-center justify-center gap-4 bg-gray-50">
+      <h1 className="text-2xl font-bold text-gray-900">Log in</h1>
+      <p className="text-gray-600">The login form comes in Step 4.</p>
+      <Link to="/" className="text-indigo-600 hover:underline">
+        Go Home
+      </Link>
+    </main>
   );
 }
 
 export default function App() {
-  const health = useQuery({
-    queryKey: ['health'],
-    queryFn: fetchHealth,
-    refetchInterval: 10_000,
-    retry: 1, // if the API doesn't answer, try once more before showing an error
-  });
-
   return (
-    <main className="min-h-screen bg-gray-50 p-8 text-gray-900">
-      <div className="mx-auto max-w-2xl space-y-6">
-        <header>
-          <h1 className="text-3xl font-bold">DealFlow CRM</h1>
-          <p className="mt-1 text-gray-600">Milestone 0: frontend, API and database connected.</p>
-        </header>
-        <section className="rounded-xl bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold">System status</h2>
-          {health.isPending ? (
-            <StatusBadge label="Checking" tone="gray" />
-          ) : health.isError ? (
-            <StatusBadge label="API unreachable" tone="red" />
-          ) : (
-            <div className="flex flex-wrap items-center gap-3">
-              <StatusBadge
-                label={`API: ${health.data.status}`}
-                tone={health.data.status === 'ok' ? 'green' : 'amber'}
-              />
-              <StatusBadge
-                label={`Database: ${health.data.database}`}
-                tone={health.data.database === 'up' ? 'green' : 'red'}
-              />
-              <span className="text-sm text-gray-500">
-                Last checked {new Date(health.data.timestamp).toLocaleTimeString()}
-              </span>
-            </div>
-          )}
-        </section>
-
-        <section className="rounded-xl bg-white p-6 shadow-sm">
-          <h2 className="mb-4 text-lg font-semibold">Deal stages (from @dealflow/shared)</h2>
-          <ol className="flex flex-wrap gap-2">
-            {DEAL_STAGES.map((stage) => (
-              <li
-                key={stage}
-                className="rounded-md bg-indigo-50 px-3 py-1 text-sm capitalize text-indigo-700"
-              >
-                {stage}
-              </li>
-            ))}
-          </ol>
-        </section>
-      </div>
-    </main>
+    <Routes>
+      <Route path="/" element={<DashboardPage />} />
+      <Route path="/signup" element={<SignupPage />} />
+      <Route path="/login" element={<LoginPage />} />
+      {/* "*" matches everything, so it must come last */}
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>
   );
 }

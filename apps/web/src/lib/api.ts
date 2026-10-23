@@ -2,13 +2,10 @@ import type { z } from 'zod';
 import {
   authResponseSchema,
   healthResponseSchema,
-  workspaceResponseSchema,
   type AuthResponse,
   type HealthResponse,
   type LoginInput,
   type RegisterInput,
-  type UpdateWorkspaceInput,
-  type Workspace,
 } from '@dealflow/shared';
 
 const API_BASE = '/api/v1';
