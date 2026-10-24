@@ -4,10 +4,10 @@ import * as api from '../../lib/api';
 import { AuthContext, type AuthState } from './auth-context';
 
 export default function AuthProvider({ children }: { children: ReactNode }) {
-    // Nobody is logged in when the app starts (Step 7 will change this)
+  // Nobody is logged in when the app starts (Step 7 will change this)
   const [state, setState] = useState<AuthState>({ status: 'unauthenticated' });
 
-   // Log in with the API, then REMEMBER the user
+  // Log in with the API, then REMEMBER the user
   const logIn = useCallback(async (input: LoginInput) => {
     const { user } = await api.login(input);
     setState({ status: 'authenticated', user });
@@ -24,5 +24,4 @@ export default function AuthProvider({ children }: { children: ReactNode }) {
 
   // Every component inside {children} can now call useAuth()
   return <AuthContext value={value}>{children}</AuthContext>;
-
 }

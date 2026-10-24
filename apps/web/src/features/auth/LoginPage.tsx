@@ -28,9 +28,9 @@ export default function LoginPage() {
   const onSubmit = handleSubmit(async (values) => {
     try {
       await logIn(values); // CHANGED: logs in AND remembers the user
-    //  await api.login(values); // the function from Step 1
+      //  await api.login(values); // the function from Step 1
       // setLoggedInUser(user);
-      navigate('/dashboard')
+      navigate('/dashboard');
     } catch (error) {
       applyServerErrors(error, setError);
     }
