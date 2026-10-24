@@ -8,7 +8,8 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest run --passWithNoTests",
     "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate"
+    "db:migrate": "drizzle-kit migrate",
+    "build:lambda": "node scripts/build-lambda.mjs"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.10",
@@ -17,6 +18,7 @@
     "@types/pg": "^8.23.1",
     "@types/supertest": "^7.2.1",
     "drizzle-kit": "^0.31.11",
+    "esbuild": "^0.28.2",
     "supertest": "^7.3.1",
     "tsx": "^4.23.15"
   },
@@ -26,6 +28,7 @@
     "express": "^5.3.0",
     "express-rate-limit": "^8.7.1",
     "helmet": "^8.3.0",
-    "jose": "^6.2.12"
+    "jose": "^6.2.12",
+    "serverless-http": "^4.0.0"
   }
 }
