@@ -19,8 +19,10 @@
     "db:down": "docker compose down",
     "db:generate": "npm run db:generate -w @dealflow/api",
     "db:migrate": "npm run db:migrate -w @dealflow/api",
+    "dev": "concurrently -n api,web -c blue,magenta npm:dev:api npm:dev:web",
     "dev:api": "npm run dev -w @dealflow/api",
     "dev:web": "npm run dev -w @dealflow/web",
+    "dev:cloud": "npm run dev:cloud -w @dealflow/web",
     "build": "npm run build --workspaces --if-present"
   },
   "dependencies": {
@@ -32,6 +34,7 @@
   "devDependencies": {
     "@eslint/js": "^10.0.1",
     "@types/pg": "^8.23.1",
+    "concurrently": "^10.0.6",
     "drizzle-kit": "^0.31.11",
     "eslint": "^10.13.0",
     "eslint-plugin-react-hooks": "^7.1.1",
