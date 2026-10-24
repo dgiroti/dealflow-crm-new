@@ -18,6 +18,12 @@ function StatusBadge({ label, tone }: { label: string; tone: Tone }) {
   );
 }
 
+// Which API the dev server is forwarding to, based on Vite's mode
+const connectedToLabel: Record<string, string> = {
+  development: 'Local API (your Codespace)',
+  cloud: 'Cloud API (AWS Lambda + Neon)',
+};
+
 // "Good morning" / "Good afternoon" / "Good evening", based on the user's own clock
 function greeting(): string {
   const hour = new Date().getHours();
@@ -147,6 +153,12 @@ export default function DashboardPage() {
             </li>
           ))}
         </ol>
+
+        {connectedToLabel[import.meta.env.MODE] && (
+          <p className="mt-4 text-xs text-gray-500">
+            Connected to: {connectedToLabel[import.meta.env.MODE]}
+          </p>
+        )}
       </section>
 
       {/* Temporary links, so we can move between pages while building them
