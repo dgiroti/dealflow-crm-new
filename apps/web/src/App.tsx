@@ -2,6 +2,8 @@ import { Link, Route, Navigate, Routes } from 'react-router';
 import DashboardPage from './features/dashboard/DashboardPage';
 import LoginPage from './features/auth/LoginPage';
 import SignupPage from './features/auth/SignupPage';
+import ComingSoon from './components/ComingSoon';
+import AppLayout from './components/AppLayout';
 
 function NotFoundPage() {
   return (
@@ -22,7 +24,25 @@ export default function App() {
       <Route path="/" element={<Navigate to="/login" replace />} />
       <Route path="/signup" element={<SignupPage />} />
       <Route path="/login" element={<LoginPage />} />
-      <Route path="/dashboard" element={<DashboardPage />} />
+
+      {/* NEW: a "layout route". It has no path of its own; every route inside it
+          is drawn inside AppLayout, wherever AppLayout puts <Outlet /> */}
+      <Route element={<AppLayout />}>
+        <Route path="/dashboard" element={<DashboardPage />} />
+        <Route
+          path="/companies"
+          element={<ComingSoon title="Companies" availableIn="Milestone 2" />}
+        />
+        <Route
+          path="/contacts"
+          element={<ComingSoon title="Contacts" availableIn="Milestone 2" />}
+        />
+        <Route path="/deals" element={<ComingSoon title="Deals" availableIn="Milestone 3" />} />
+        <Route path="/tasks" element={<ComingSoon title="Tasks" availableIn="Milestone 4" />} />
+        <Route path="/settings" element={<ComingSoon title="Settings" availableIn="Step 11" />} />
+      </Route>
+
+      {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
       {/* "*" matches everything, so it must come last */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>

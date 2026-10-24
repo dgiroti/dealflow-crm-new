@@ -24,3 +24,13 @@ export function useAuth(): AuthContextValue {
   }
   return context;
 }
+
+// For pages inside the app layout, where a user is guaranteed to be logged in.
+// Returns the user directly, so pages don't have to check the status themselves.
+export function useCurrentUser(): AuthUser {
+  const { state } = useAuth();
+  if (state.status !== 'authenticated') {
+    throw new Error('useCurrentUser must be used on pages inside the app layout');
+  }
+  return state.user;
+}
