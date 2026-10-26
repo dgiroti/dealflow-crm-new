@@ -2,13 +2,20 @@ import { createContext, useContext } from 'react';
 import type { AuthUser, LoginInput, RegisterInput } from '@dealflow/shared';
 // The app is always in exactly ONE of these states.
 // (In Step 7 we'll add a third one: "loading".)
-export type AuthState = { status: 'authenticated'; user: AuthUser } | { status: 'unauthenticated' };
+// export type AuthState = { status: 'authenticated'; user: AuthUser } | { status: 'unauthenticated' };
+
+// The app is always in exactly ONE of these states
+export type AuthState =
+  | { status: 'loading' } // NEW: still checking with the API
+  | { status: 'authenticated'; user: AuthUser }
+  | { status: 'unauthenticated' };
 
 // Everything the AuthProvider shares with the rest of the app
 export type AuthContextValue = {
   state: AuthState;
   logIn: (input: LoginInput) => Promise<void>;
   signUp: (input: RegisterInput) => Promise<void>;
+  logOut: () => Promise<void>; // NEW
 };
 
 // The shared "box". It starts empty (null) until AuthProvider fills it.
