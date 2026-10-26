@@ -175,7 +175,6 @@ export async function logout(): Promise<void> {
   }
 }
 
-
 export async function fetchHealth(): Promise<HealthResponse> {
   const res = await fetch(`${API_BASE}/health`);
   return healthResponseSchema.parse(await res.json());

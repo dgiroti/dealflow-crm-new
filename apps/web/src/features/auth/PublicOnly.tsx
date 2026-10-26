@@ -14,7 +14,7 @@ export default function PublicOnly() {
   const { state } = useAuth();
   const location = useLocation();
 
-   if (state.status === 'authenticated') {
+  if (state.status === 'authenticated') {
     // Logged in: go where they originally wanted to go (saved by RequireAuth), or the dashboard
     const from = (location.state as { from?: unknown } | null)?.from;
     return <Navigate to={safeRedirectPath(from)} replace />;

@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useState, type ReactNode } from 'react';
+import { useCallback, useMemo, useState, type ReactNode } from 'react';
 import type { LoginInput, RegisterInput } from '@dealflow/shared';
 import * as api from '../../lib/api';
 import { AuthContext, type AuthState } from './auth-context';
@@ -7,7 +7,7 @@ import { useQueryClient } from '@tanstack/react-query';
 export default function AuthProvider({ children }: { children: ReactNode }) {
   // Nobody is logged in when the app starts (Step 7 will change this)
   const [state, setState] = useState<AuthState>({ status: 'unauthenticated' });
-   const queryClient = useQueryClient();
+  const queryClient = useQueryClient();
 
   // Log in with the API, then REMEMBER the user
   const logIn = useCallback(async (input: LoginInput) => {

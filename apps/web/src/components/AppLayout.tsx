@@ -23,7 +23,7 @@ export default function AppLayout() {
   const navigate = useNavigate();
   const [isLoggingOut, setIsLoggingOut] = useState(false);
 
-   const handleLogOut = async () => {
+  const handleLogOut = async () => {
     setIsLoggingOut(true);
     await logOut();
     // "replace": the back button can't return to the page you logged out from
@@ -77,15 +77,15 @@ export default function AppLayout() {
             <p className="text-xs capitalize text-gray-500">{user.role}</p>
           </div>
 
-           {/* NEW */}
-            <button
-              type="button"
-              onClick={() => void handleLogOut()}
-              disabled={isLoggingOut}
-              className="mt-3 w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-700 ring-1 ring-gray-300 hover:bg-gray-50 disabled:opacity-60"
-            >
-              {isLoggingOut ? 'Logging out…' : 'Log out'}
-            </button>
+          {/* NEW */}
+          <button
+            type="button"
+            onClick={() => void handleLogOut()}
+            disabled={isLoggingOut}
+            className="mt-3 w-full rounded-lg px-4 py-2 text-sm font-medium text-gray-700 ring-1 ring-gray-300 hover:bg-gray-50 disabled:opacity-60"
+          >
+            {isLoggingOut ? 'Logging out…' : 'Log out'}
+          </button>
         </div>
       </aside>
       {/* ── The current page appears here ── */}
