@@ -1,4 +1,5 @@
-import { Link, useNavigate } from 'react-router';
+// import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 // import { registerSchema, type AuthUser } from '@dealflow/shared';
@@ -12,7 +13,7 @@ import { useAuth } from './auth-context';
 export default function SignupPage() {
   // const [createdUser, setCreatedUser] = useState<AuthUser | null>(null);
   const { signUp } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
 
   const {
     register, // connects an input to the form
@@ -34,7 +35,7 @@ export default function SignupPage() {
   const onSubmit = handleSubmit(async (values) => {
     try {
       await signUp(values);
-      navigate('/dashboard');
+      // navigate('/dashboard');
       // const { user } = await api.register(values); // the function from Step 1
       // setCreatedUser(user);
     } catch (error) {

@@ -1,6 +1,7 @@
 // import { Link } from 'react-router';
 // import { useState } from 'react';
-import { Link, useNavigate } from 'react-router';
+// import { Link, useNavigate } from 'react-router';
+import { Link } from 'react-router';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 // import { loginSchema, type AuthUser } from '@dealflow/shared';
@@ -11,7 +12,7 @@ import { useAuth } from './auth-context';
 
 export default function LoginPage() {
   // const [loggedInUser, setLoggedInUser] = useState<AuthUser | null>(null);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { logIn } = useAuth(); // NEW
 
   const {
@@ -30,7 +31,7 @@ export default function LoginPage() {
       await logIn(values); // CHANGED: logs in AND remembers the user
       //  await api.login(values); // the function from Step 1
       // setLoggedInUser(user);
-      navigate('/dashboard');
+      // navigate('/dashboard');
     } catch (error) {
       applyServerErrors(error, setError);
     }

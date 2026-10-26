@@ -73,6 +73,18 @@ export function refreshSession(): Promise<AuthResponse> {
 //   return refreshInFlight;
 // }
 
+// async function requestNewTokens(): Promise<AuthResponse> {
+//   const res = await fetch(`${API_BASE}/auth/refresh`, {
+//     method: 'POST',
+//     credentials: 'same-origin', // send the refresh cookie
+//   });
+//   if (!res.ok) throw await toApiError(res);
+
+//   const data = authResponseSchema.parse(await res.json());
+//   accessToken = data.accessToken; // remember the new token for the next requests
+//   return data;
+// }
+
 async function apiRequest<T>(
   path: string,
   schema: z.ZodType<T>,
@@ -162,6 +174,7 @@ export async function logout(): Promise<void> {
     accessToken = null;
   }
 }
+
 
 export async function fetchHealth(): Promise<HealthResponse> {
   const res = await fetch(`${API_BASE}/health`);
