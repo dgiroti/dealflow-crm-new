@@ -1,0 +1,22 @@
+# How Netlify builds the app
+[build]
+  # Build only the web app (npm installs the whole monorepo first)
+  command = "npm run build -w @dealflow/web"
+  # The folder Vite puts the finished website in
+  publish = "apps/web/dist"
+
+# Rule 1: forward every /api request to the API on Lambda.
+# "status = 200" makes it a proxy: the browser stays on the Netlify address.
+[[redirects]]
+  from = "/api/*"
+  to = "https://ehltwb7dn622xema5e2cmibj3y0algxn.lambda-url.ap-southeast-2.on.aws/api/:splat"
+  status = 200
+  force = true
+
+# Rule 2: send every other address to the React app.
+# Without this, opening /dashboard directly would show Netlify's "Page not found",
+# because there's no file called "dashboard". React Router handles it instead.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
